@@ -1,5 +1,5 @@
 # --- 第一阶段：构建 (Build Stage) ---
-    FROM registry.cn-hangzhou.aliyuncs.com/google_containers/node:24-alpine as builder
+    FROM registry.cn-hangzhou.aliyuncs.com/library/node:24-alpine as builder
     WORKDIR /app
     # 单独复制 package.json 利用缓存
     COPY package*.json ./
@@ -11,7 +11,7 @@
     RUN npm run build
     
     # --- 第二阶段：生产部署 (Production Stage) ---
-    FROM registry.cn-hangzhou.aliyuncs.com/google_containers/nginx:alpine
+    FROM registry.cn-hangzhou.aliyuncs.com/library/nginx:alpine
     # 1. 把第一阶段打包好的 dist 文件夹复制到 Nginx 默认目录
     COPY --from=builder /app/dist /usr/share/nginx/html
     # 2. 把我们写的 nginx.conf 复制进去替换默认配置
